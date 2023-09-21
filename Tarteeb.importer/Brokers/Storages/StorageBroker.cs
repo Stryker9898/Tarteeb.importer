@@ -15,10 +15,17 @@ namespace Tarteeb.importer.Brockers.Storages
         public StorageBroker() => 
             this.Database.EnsureCreated();
 
+        public async Task<Client> InsertClientAsync(Client client)
+        {
+            await this.Clients.AddAsync(client);
+            await this.SaveChangesAsync();
+            return client;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = "Data Source = ..\\..\\..\\ Tarteeb.db";
-
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             optionsBuilder.UseSqlite(connectionString);
         }
     }
