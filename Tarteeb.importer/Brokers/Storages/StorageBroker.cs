@@ -29,9 +29,11 @@ namespace Tarteeb.importer.Brockers.Storages
             optionsBuilder.UseSqlite(connectionString);
         }
 
-        public async Task<Client> SelectClientByIdAsync(Guid id)
-        {
-            return await this.Clients.FindAsync(id);
-        }
+        public async Task<Client> SelectClientByIdAsync(Guid id) =>
+             await this.Clients.FindAsync(id);
+
+        public IQueryable<Client> SelectAllClients() =>
+             this.Clients.AsQueryable();
+
     }
 }
