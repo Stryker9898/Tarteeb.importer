@@ -10,19 +10,19 @@ namespace Tarteeb.importer
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var client = new Client();
-            client.Id = Guid.NewGuid();
-            client.Email = "dilshodbekkhamroev98@gmail.com";
-            client.Firstname = "Dilshodbek";
-            client.Lastname = "Khamroev";
-            client.BirthDate = DateTime.Now;
-            client.PhoneNumber = "1234567890";
+   
+            using (var storageBroker = new StorageBroker())
+            {
+                IQueryable<Client> clients = storageBroker.SelectAllClients();
 
-            var storageBroker = new StorageBroker();
-            storageBroker.Clients.Add(client);
-            storageBroker.SaveChanges();
+                foreach (var client in clients)
+                {
+                    Console.WriteLine(client.Id + " "+ client.Firstname + " " + client.Lastname);
+                }
+            }
+
 
         }
     }
