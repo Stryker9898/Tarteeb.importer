@@ -21,8 +21,8 @@ namespace Tarteeb.importer
                 {
                     Console.WriteLine(client.Id + " "+ client.Firstname + " " + client.Lastname);
                 }
-            }
 
+            }
 
         }
     }

@@ -34,7 +34,6 @@ namespace Tarteeb.importer.Brockers.Storages
 
         public IQueryable<Client> SelectAllClients() =>
              this.Clients.AsQueryable();
-        
-    
+
     }
 }
