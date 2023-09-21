@@ -10,7 +10,7 @@ namespace Tarteeb.importer
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var client = new Client();
             client.Id = Guid.NewGuid();
@@ -20,9 +20,13 @@ namespace Tarteeb.importer
             client.BirthDate = DateTime.Now;
             client.PhoneNumber = "1234567890";
 
-            var storageBroker = new StorageBroker();
-            storageBroker.Clients.Add(client);
-            storageBroker.SaveChanges();
+
+            using (var storageBroker = new StorageBroker())
+            {
+                Client persistentClient = await storageBroker.InsertClientAsync(client);
+                Console.WriteLine(persistentClient);
+            }
+
 
         }
     }
