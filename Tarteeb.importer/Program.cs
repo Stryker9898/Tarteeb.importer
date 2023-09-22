@@ -5,6 +5,8 @@
 
 using Tarteeb.importer.Brockers.Storages;
 using Tarteeb.importer.Models.Clients;
+using Tarteeb.importer.Models.Exceptions;
+using Tarteeb.importer.Services.Clients;
 
 namespace Tarteeb.importer
 {
@@ -12,18 +14,22 @@ namespace Tarteeb.importer
     {
         static async Task Main(string[] args)
         {
-   
-            using (var storageBroker = new StorageBroker())
+            try 
             {
-                IQueryable<Client> clients = storageBroker.SelectAllClients();
-
-                foreach (var client in clients)
+                using (var storageBroker = new StorageBroker())
                 {
-                    Console.WriteLine(client.Id + " "+ client.Firstname + " " + client.Lastname);
+                    Client client = null;
+
+                    var clientServices = new ClientServices(storageBroker);
+                    Client persistedClient = await clientServices.AddClientAsync(client);
+                    Console.WriteLine(persistedClient.Id);
+
                 }
-
+            } 
+            catch (NullClientException exception) 
+            {
+                Console.WriteLine(exception.Message);
             }
-
         }
     }
 }
