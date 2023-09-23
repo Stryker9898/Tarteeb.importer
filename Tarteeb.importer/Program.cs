@@ -4,6 +4,7 @@
 //===============================
 
 using Tarteeb.importer.Brockers.Storages;
+using Tarteeb.importer.Brokers.Loggings;
 using Tarteeb.importer.Models.Clients;
 using Tarteeb.importer.Models.Exceptions;
 using Tarteeb.importer.Services.Clients;
@@ -19,8 +20,8 @@ namespace Tarteeb.importer
                 using (var storageBroker = new StorageBroker())
                 {
                     Client client = null;
-
-                    var clientServices = new ClientServices(storageBroker);
+                    var loggingBroker = new LoggingBroker();
+                    var clientServices = new ClientServices(storageBroker,loggingBroker);
                     Client persistedClient = await clientServices.AddClientAsync(client);
                     Console.WriteLine(persistedClient.Id);
 
