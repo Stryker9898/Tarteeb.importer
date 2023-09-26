@@ -15,22 +15,37 @@ namespace Tarteeb.importer
     {
         static async Task Main(string[] args)
         {
-            try 
+            try
             {
-                using (var storageBroker = new StorageBroker())
+                var storageBroker = new StorageBroker();
+                Client client = new Client
                 {
-                    Client client = null;
-                    var loggingBroker = new LoggingBroker();
-                    var clientServices = new ClientServices(storageBroker,loggingBroker);
-                    Client persistedClient = await clientServices.AddClientAsync(client);
-                    Console.WriteLine(persistedClient.Id);
+                    BirthDate = DateTime.Now,
+                    Email = "testuhu@mail.ru",
+                    Firstname = "Jasur",
+                    Lastname = "test",
+                    Id = Guid.NewGuid(),
+                    GroupId = Guid.NewGuid(),
+                    PhoneNumber = "12234",
 
-                }
-            } 
-            catch (NullClientException exception) 
+                };
+                var loggingBroker = new LoggingBroker();
+                var clientServices = new ClientServices(storageBroker, loggingBroker);
+                Client persistedClient = await clientServices.AddClientAsync(client);
+                Console.WriteLine(persistedClient.Id);
+
+
+            }
+            catch (NullClientException exception)
             {
                 Console.WriteLine(exception.Message);
             }
+
+            catch(InvalidClientException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
         }
     }
 }
