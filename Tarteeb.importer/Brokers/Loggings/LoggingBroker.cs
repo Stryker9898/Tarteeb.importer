@@ -2,6 +2,8 @@
 // Copyright (c) Tarteeb LLC
 // Powering True Leadership
 //===============================
+using Tarteeb.importer.Models.Exceptions;
+
 namespace Tarteeb.importer.Brokers.Loggings
 {
     internal class LoggingBroker
@@ -10,6 +12,11 @@ namespace Tarteeb.importer.Brokers.Loggings
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(exception.Message);
+        }
+
+        public object meg(NullClientException nullClientException)
+        {
+            throw new NotImplementedException();
         }
     }
 }
