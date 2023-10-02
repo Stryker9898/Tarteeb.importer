@@ -16,7 +16,7 @@ namespace Tarteeb.importer.Brockers.Storages
             this.Database.EnsureCreated();
 
         public async Task<Client> InsertClientAsync(Client client)
-        {
+        { 
             await this.Clients.AddAsync(client);
             await this.SaveChangesAsync();
             return client;
