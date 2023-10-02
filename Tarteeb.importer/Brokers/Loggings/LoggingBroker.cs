@@ -14,9 +14,5 @@ namespace Tarteeb.importer.Brokers.Loggings
             Console.WriteLine(exception.Message);
         }
 
-        public object meg(NullClientException nullClientException)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

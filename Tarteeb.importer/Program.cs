@@ -51,25 +51,25 @@ namespace Tarteeb.importer
             }
 
             catch (ClientValidationException clientValidationException)
+                when (clientValidationException.InnerException is InvalidClientException)
             {
-                if(clientValidationException.InnerException.Message == "Client is Invalid fix the errors and try again")
+
+                Xeption innerException = (Xeption)clientValidationException.InnerException;
+                Console.WriteLine(innerException.Message);
+                foreach (DictionaryEntry item in innerException.Data)
                 {
-                    Xeption innerException = (Xeption)clientValidationException.InnerException;
-                    Console.WriteLine(innerException.Message);
-                    foreach (DictionaryEntry item in innerException.Data)
-                    {
-                        string errorSummary = ((List<string>)item.Value)
-                            .Select((string value) => value)
-                            .Aggregate((string current, string next) => current + ", " + next);
-                        Console.WriteLine(item.Key + " - " + errorSummary);
-                    }
+                    string errorSummary = ((List<string>)item.Value)
+                        .Select((string value) => value)
+                        .Aggregate((string current, string next) => current + ", " + next);
+                    Console.WriteLine(item.Key + " - " + errorSummary);
                 }
 
-                else
-                {
-                    Console.WriteLine(clientValidationException.Message);
-                }
-               
+            }
+
+            catch (ClientValidationException clientValidationException)
+              when (clientValidationException.InnerException is NullClientException)
+            {
+                Console.WriteLine(clientValidationException.Message);
             }
 
             catch (ClientDependecyValidationException clientDependecyValidationException)
@@ -77,12 +77,12 @@ namespace Tarteeb.importer
                 Console.WriteLine(clientDependecyValidationException.Message);
             }
 
-            catch(ClientDependencyException clientDependencyException)
+            catch (ClientDependencyException clientDependencyException)
             {
                 Console.WriteLine(clientDependencyException.Message);
             }
 
-            catch(ClientServiceException clientServiceException)
+            catch (ClientServiceException clientServiceException)
             {
                 Console.WriteLine(clientServiceException.Message);
             }
