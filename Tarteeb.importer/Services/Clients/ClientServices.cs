@@ -4,35 +4,33 @@
 //===============================
 
 using Tarteeb.importer.Brockers.Storages;
+using Tarteeb.importer.Brokers.DateTimes;
 using Tarteeb.importer.Brokers.Loggings;
 using Tarteeb.importer.Models.Clients;
-using Tarteeb.importer.Models.Exceptions;
 
 namespace Tarteeb.importer.Services.Clients
 {
-    internal class ClientServices
+    internal partial class ClientServices
     {
         public readonly StorageBroker storageBroker;
         public readonly LoggingBroker loggingBroker;
-        public ClientServices(StorageBroker storageBroker,LoggingBroker loggingBroker)
+        public readonly DateTimeBroker dateTimeBroker;
+        public ClientServices(StorageBroker storageBroker, LoggingBroker loggingBroker, DateTimeBroker dateTimeBroker)
         {
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async Task<Client> AddClientAsync(Client client)
-        {
-            try
-            {
-               return await storageBroker.InsertClientAsync(client);
-            }
-            catch (Exception)
-            {
-                var clientException = new NullClientException();
-                this.loggingBroker.LogError(clientException);
-                throw clientException;
-            }
-             
-        }
+         public Task<Client> AddClientAsync(Client client) =>
+         TryCatch(() =>
+         {
+             ValidateClientOnAdd(client);
+
+             return storageBroker.InsertClientAsync(client);
+         });
+
+
+
     }
 }
