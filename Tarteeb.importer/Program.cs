@@ -29,23 +29,15 @@ namespace Tarteeb.importer
                 var loggingBroker = new LoggingBroker();
                 var dateTimeBroker = new DateTimeBroker();
 
-                var dateTimeOffset = new DateTimeOffset(
-                new DateTime(2020, 3, 16, 7, 0, 0),
-                new TimeSpan(-7, 0, 0));
 
-                Client client = new Client
+
+                for (int i = 0; i < 200; i++)
                 {
-                    BirthDate = dateTimeOffset,
-                    Email = "testuhumail.ru",
-                    Firstname = "",
-                    Lastname = "test",
-                    Id = Guid.NewGuid(),
-                    GroupId = Guid.NewGuid(),
-                    PhoneNumber = "12234",
-                };
-                var clientServices = new ClientServices(storageBroker, loggingBroker, dateTimeBroker);
-                Client persistedClient = await clientServices.AddClientAsync(client);
-                Console.WriteLine(persistedClient.Id);
+                    var clientServices = new ClientServices(storageBroker, loggingBroker, dateTimeBroker);
+                    Client client =  clientServices.CreateRandomClient();
+                    Client persistedClient = await clientServices.AddClientAsync(client);
+                    Console.WriteLine(persistedClient.Id);
+                }
 
 
             }
